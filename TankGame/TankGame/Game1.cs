@@ -19,8 +19,8 @@ namespace TankGame
         public static Game1 Instance;
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
-
         public List<Entity> children = new List<Entity>();
+
         public Game1()
         {
             Instance = this;
@@ -37,11 +37,12 @@ namespace TankGame
         protected override void Initialize()
         {
             Tank tank = new Tank();
+
             children.Add(tank);
             
-            foreach (Entity entity in children)
+            for ( int i = 0; i < children.Count(); i++ )
             {
-                entity.Initialize();
+                children[i].Initialize();
             }
 
             base.Initialize();
@@ -56,9 +57,9 @@ namespace TankGame
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
 
-            foreach (Entity entity in children)
+            for ( int i = 0; i < children.Count(); i++ )
             {
-                entity.LoadContent();
+                children[i].LoadContent();
             }
         }
 
@@ -78,15 +79,22 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            foreach (Entity entity in children)
+            for ( int i = 0; i < children.Count(); i++ )
             {
-                entity.Update(gameTime);
+                children[i].Update(gameTime);
             }
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
 
             // TODO: Add your update logic here
+            for (int i = 0; i < children.Count(); i++)
+            {
+                if (false == children[i].Alive)
+                {
+                    children.RemoveAt(i);
+                }
+            }
 
             base.Update(gameTime);
         }
@@ -100,9 +108,9 @@ namespace TankGame
             GraphicsDevice.Clear(Color.White);
 
             spriteBatch.Begin();
-            foreach (Entity entity in children)
+            for (int i = 0; i < children.Count; i++ )
             {
-                entity.Draw(gameTime);
+                children[i].Draw(gameTime);
             }
             spriteBatch.End();
 

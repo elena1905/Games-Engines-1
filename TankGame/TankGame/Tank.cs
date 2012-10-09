@@ -13,6 +13,7 @@ namespace TankGame
 {
     class Tank : Entity
     {
+
         public override void LoadContent()
         {
             base.LoadContent();
@@ -25,23 +26,29 @@ namespace TankGame
             float timeDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
             KeyboardState keyState = Keyboard.GetState();
-            float speed = 100.0f;
+            float speed = 85.0f;
 
             // Calculate the correct look vector for the tank
+            look.X = (float) Math.Sin(rotation);
+            look.Y = (float)-Math.Cos(rotation);
 
-            //
+            // Exit the game when Escape key pressed
+            if (keyState.IsKeyDown(Keys.Escape))
+            {
+                Game1.Instance.Exit();
+            }
 
-            
-
-            if (keyState.IsKeyDown(Keys.Q))
+            // Rotation
+            if (keyState.IsKeyDown(Keys.Left))
             {
                 rotation -= (5.0f * timeDelta);
             }
-            if (keyState.IsKeyDown(Keys.E))
+            if (keyState.IsKeyDown(Keys.Right))
             {
                 rotation += (5.0f * timeDelta);
             }
 
+            // Movement
             if (keyState.IsKeyDown(Keys.W))
             {
                 pos += look * speed * timeDelta;
@@ -58,6 +65,12 @@ namespace TankGame
             {
                 pos.X += (speed * timeDelta);
             }
+
+            // Fire bullet
+            if (keyState.IsKeyDown(Keys.Space))
+            {
+                fireBullet();
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -68,6 +81,26 @@ namespace TankGame
 
             Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 1);
             //Game1.Instance.spriteBatch.Draw(sprite, pos, Color.White);
+        }
+
+        // Method to fire a bullet
+        private void fireBullet()
+        {
+            Bullet bullet = new Bullet();
+
+            // Initialize bullet: set Alive true
+            bullet.Initialize();
+
+            // Why load content explicitly???
+            bullet.LoadContent();
+
+            // Set bullet position where it should be fired
+            bullet.pos = pos + look * (sprite.Height / 2);
+
+            // Set direction at which bullet should be fired
+            bullet.look = look;
+
+            Game1.Instance.children.Add(bullet);
         }
     }
 }

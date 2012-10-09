@@ -13,35 +13,29 @@ namespace TankGame
 {
     class Bullet : Entity
     {
-        public override void Initialize()
-        {
-            pos.X = 100;
-            pos.Y = 100;
-            rotation = 0.0f;
-            look.X = 0;
-            look.Y = -1;
-            Alive = true;
-        }
+        Vector2 center;
 
         public override void LoadContent()
         {
-            base.LoadContent();
-
+            //base.LoadContent();
+            speed = 200.0f;
             sprite = Game1.Instance.Content.Load<Texture2D>("bullet");
+            center.X = sprite.Width / 2;
+            center.Y = sprite.Height / 2;
+            Alive = true;
         }
 
         public override void Update(GameTime gameTime) 
         {
             float timeDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
 
-            //KeyboardState keyState = Keyboard.GetState();
-            float speed = 85.0f;
+            //speed = 100.0f;
 
             pos += look * speed * timeDelta;
 
             // Bounds checking
-            if (pos.X < sprite.Width / 2 ||
-                pos.Y < sprite.Height / 2||
+            if (pos.X < 0 ||
+                pos.Y < 0 ||
                 pos.X > Game1.Instance.Window.ClientBounds.Width - sprite.Width / 2 ||
                 pos.Y > Game1.Instance.Window.ClientBounds.Height - sprite.Height / 2)
             {
@@ -51,12 +45,7 @@ namespace TankGame
 
         public override void Draw(GameTime gameTime)
         {
-            Vector2 origin;
-            origin.X = sprite.Width / 2;
-            origin.Y = sprite.Height / 2;
-
-            Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 1);
-            //Game1.Instance.spriteBatch.Draw(sprite, pos, Color.White);
+            Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, center, Vector2.One, SpriteEffects.None, 0);
         }
     }
 }

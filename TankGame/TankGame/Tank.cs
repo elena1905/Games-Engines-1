@@ -16,6 +16,8 @@ namespace TankGame
         protected float fireRate;
         protected float elapsedTime;
 
+        Vector2 centre;
+
         public override void LoadContent()
         {
             base.LoadContent();
@@ -23,9 +25,12 @@ namespace TankGame
             Alive = true;
             fireRate = 10.0f;
             elapsedTime = 100.0f;
-            speed = 85.0f;
+            speed = 100.0f;
 
             sprite = Game1.Instance.Content.Load<Texture2D>("smalltank");
+
+            centre.X = sprite.Width / 2;
+            centre.Y = sprite.Height / 2;
         }
 
         public override void Update(GameTime gameTime) 
@@ -69,19 +74,19 @@ namespace TankGame
             }
 
             // Window boundaries detect
-            if (pos.X < sprite.Width / 2)
+            if (pos.X < centre.X)
             {
                 pos.X += speed * timeDelta;
             }
-            if (pos.X > Game1.Instance.Window.ClientBounds.Width - sprite.Width / 2)
+            if (pos.X > Game1.Instance.ScreenWidth - centre.X)
             {
                 pos.X -= speed * timeDelta;
             }
-            if (pos.Y < sprite.Height / 2)
+            if (pos.Y < centre.Y)
             {
                 pos.Y += speed * timeDelta;
             }
-            if (pos.Y > Game1.Instance.Window.ClientBounds.Height - sprite.Height / 2)
+            if (pos.Y > Game1.Instance.ScreenHeight - centre.Y)
             {
                 pos.Y -= speed * timeDelta;
             }
@@ -112,11 +117,7 @@ namespace TankGame
 
         public override void Draw(GameTime gameTime)
         {
-            Vector2 origin;
-            origin.X = sprite.Width / 2;
-            origin.Y = sprite.Height / 2;
-
-            Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, origin, 1.0f, SpriteEffects.None, 1);
+            Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, centre, Vector2.One, SpriteEffects.None, 1);
         }
 
         // Method to fire a bullet
@@ -128,7 +129,7 @@ namespace TankGame
             bullet.LoadContent();
 
             // Set bullet position where it should be fired
-            bullet.pos = pos + look * (sprite.Height / 2);
+            bullet.pos = pos + look * centre.Y;
 
             // Set direction at which bullet should be fired
             bullet.look = look;

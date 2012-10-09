@@ -13,16 +13,19 @@ namespace TankGame
 {
     class Bullet : Entity
     {
-        Vector2 center;
+        Vector2 centre;
 
         public override void LoadContent()
         {
             //base.LoadContent();
             speed = 200.0f;
-            sprite = Game1.Instance.Content.Load<Texture2D>("bullet");
-            center.X = sprite.Width / 2;
-            center.Y = sprite.Height / 2;
+
             Alive = true;
+
+            sprite = Game1.Instance.Content.Load<Texture2D>("bullet");
+            
+            centre.X = sprite.Width / 2;
+            centre.Y = sprite.Height / 2;
         }
 
         public override void Update(GameTime gameTime) 
@@ -36,8 +39,8 @@ namespace TankGame
             // Bounds checking
             if (pos.X < 0 ||
                 pos.Y < 0 ||
-                pos.X > Game1.Instance.Window.ClientBounds.Width - sprite.Width / 2 ||
-                pos.Y > Game1.Instance.Window.ClientBounds.Height - sprite.Height / 2)
+                pos.X > Game1.Instance.ScreenWidth ||
+                pos.Y > Game1.Instance.ScreenHeight)
             {
                 Alive = false;
             }
@@ -45,7 +48,7 @@ namespace TankGame
 
         public override void Draw(GameTime gameTime)
         {
-            Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, center, Vector2.One, SpriteEffects.None, 0);
+            Game1.Instance.spriteBatch.Draw(sprite, pos, null, Color.White, rotation, centre, Vector2.One, SpriteEffects.None, 0);
         }
     }
 }

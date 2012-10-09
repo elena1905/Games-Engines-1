@@ -26,10 +26,11 @@ namespace TankGame
         public static Game1 Instance;
         public GraphicsDeviceManager graphics;
         public SpriteBatch spriteBatch;
+
         public List<Entity> children = new List<Entity>();
 
-        Tank playerTank;
-        AITank enemyTank;
+        private Tank playerTank;
+        private AITank enemyTank;
 
         public Tank Tank
         {
@@ -37,7 +38,7 @@ namespace TankGame
             set { playerTank = value; }
         }
 
-        public AITank EnemyTank
+        public AITank AITank
         {
             get { return enemyTank; }
             set { enemyTank = value; }

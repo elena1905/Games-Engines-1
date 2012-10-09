@@ -16,19 +16,24 @@ namespace TankGame
         protected float fireRate;
         protected float elapsedTime;
 
-        Vector2 centre;
+        protected Vector2 centre;
 
         public override void LoadContent()
         {
             base.LoadContent();
 
             Alive = true;
+
+            // Fire 10 bullets per second
             fireRate = 10.0f;
             elapsedTime = 100.0f;
+
+            // Speed of the sprite
             speed = 100.0f;
 
             sprite = Game1.Instance.Content.Load<Texture2D>("smalltank");
 
+            // Set the centre of the sprite
             centre.X = sprite.Width / 2;
             centre.Y = sprite.Height / 2;
         }
@@ -121,7 +126,7 @@ namespace TankGame
         }
 
         // Method to fire a bullet
-        private void fireBullet()
+        protected void fireBullet()
         {
             Bullet bullet = new Bullet();
 

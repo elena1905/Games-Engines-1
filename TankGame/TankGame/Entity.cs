@@ -34,7 +34,7 @@ namespace TankGame
             rotation = 0.0f;
             look.X = 0;
             look.Y = -1;
-            alive = true;
+            //alive = true;
         }
         public virtual void LoadContent() { }
         public virtual void UnloadContent() { }

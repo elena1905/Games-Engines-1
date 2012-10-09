@@ -31,8 +31,17 @@ namespace TankGame
         Tank playerTank;
         AITank enemyTank;
 
-        Vector2 basis;
-        Vector2 target;
+        public Tank Tank
+        {
+            get { return playerTank; }
+            set { playerTank = value; }
+        }
+
+        public AITank EnemyTank
+        {
+            get { return enemyTank; }
+            set { enemyTank = value; }
+        }
 
         public int ScreenWidth
         {
@@ -59,10 +68,10 @@ namespace TankGame
         /// </summary>
         protected override void Initialize()
         {
-            basis = new Vector2(0, -1);
-
             playerTank = new Tank();
             enemyTank = new AITank();
+
+            enemyTank.pos = new Vector2(ScreenWidth / 2, 400);
 
             children.Add(playerTank);
             children.Add(enemyTank);
@@ -106,8 +115,6 @@ namespace TankGame
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            float timeDelta = (float)gameTime.ElapsedGameTime.TotalSeconds;
-
             for ( int i = 0; i < children.Count(); i++ )
             {
                 children[i].Update(gameTime);
@@ -122,35 +129,6 @@ namespace TankGame
             // Allows the game to exit
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed)
                 this.Exit();
-
-            // AITank takes actions when playerTank is less than 100 close
-            if (Detect())
-            {
-                target = playerTank.pos - enemyTank.pos;
-
-                float theta = (float)Math.Acos(Vector2.Dot(basis, target) / target.Length());
-
-                if (target.X < 0)
-                {
-                    enemyTank.rotation = (float)Math.PI * 2.0f - theta;
-                }
-                else
-                {
-                    enemyTank.rotation = theta;
-                }
-
-                enemyTank.Attack = true;
-
-                if (Vector2.Distance(playerTank.pos, enemyTank.pos) < 50)
-                {
-                    enemyTank.pos -= enemyTank.look * 10;
-                }
-            }
-            else
-            {
-                //enemyTank.rotation = 0.0f;
-                enemyTank.Attack = false;
-            }
 
             base.Update(gameTime);
         }
@@ -171,19 +149,6 @@ namespace TankGame
             spriteBatch.End();
 
             base.Draw(gameTime);
-        }
-
-        // For AITank to detect if playerTank is in shooting area (distance < 100)
-        protected bool Detect()
-        {
-            float distance = Vector2.Distance(playerTank.pos, enemyTank.pos);
-
-            if (distance > 200)
-            {
-                return false;
-            }
-
-            return true;
         }
 
         // Collision Detect

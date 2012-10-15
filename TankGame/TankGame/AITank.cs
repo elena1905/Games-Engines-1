@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace TankGame
 {
-    class AITank : Tank
+    public class AITank : Tank
     {
         float targetRotation;
         bool attack;

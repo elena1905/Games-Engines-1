@@ -11,7 +11,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace TankGame
 {
-    class Tank : Entity
+    public class Tank : Entity
     {
         protected float fireRate;
         protected float elapsedTime;
